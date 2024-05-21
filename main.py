@@ -3,8 +3,8 @@
 # Importing the necessary Python modules.
 import streamlit as st
 
-# Import necessary functions from web_functions
-from web_functions import load_data
+# Import necessary functions from model
+from model import load_data
 
 # Import pages
 from Tabs import home, data, predict, visualise,about
