@@ -2,7 +2,7 @@
 import streamlit as st
 import random
 # Import necessary functions from web_functions
-#from images.web_functions import predict
+from model import train_model, predict
 
 
 
@@ -36,12 +36,21 @@ def day_name_to_number(day_name):
     else:
         return None
 
-def predict(X, y, features):
+def prediction(X, y, features):
     # Your prediction logic here
     options = ['high', 'low', 'medium']
-    prediction = random.choice(options)
-    score = 0.8  # Replace this with your actual model score
-    return prediction, score
+    
+    prediction, score = model.predict(np.array(features).reshape(1, -1))
+    threshold_low = 0.3
+    thresold_medium = 0.7
+    if prediction <= threshold_low:
+        prediction_category = 'low'
+    elif threshold_low < prediction <= threshold_medium:
+        prediction_category = 'medium'
+    else:
+        prediction_category = 'high'
+
+    return prediction_category, score
 
 
 def Weather_type_to_number(weather_type):
@@ -206,7 +215,7 @@ def app(df, X, y, data1):
     # Create a button to predict
     if st.button("Predict"):
         # Get prediction and model score
-        prediction, score = predict(X, y, features)
+        prediction, score = prediction(X, y, features)
         # if(prediction<=1000):
         #     st.success("No Traffic on this day",icon="✅")
         # if(prediction>1000 and prediction<=3000):
